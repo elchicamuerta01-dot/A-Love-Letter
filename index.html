@@ -1,0 +1,416 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Little Surprise for You ♡</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    overflow-x: hidden;
+    font-family: Georgia, "Times New Roman", serif;
+    background: linear-gradient(135deg, #ffe3ed, #f5dcff, #fff0f5);
+    color: #b94f7e;
+}
+
+.glow {
+    position: fixed;
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    background: #ffffff70;
+    filter: blur(65px);
+    pointer-events: none;
+}
+
+.glow.one {
+    top: -70px;
+    left: -70px;
+}
+
+.glow.two {
+    bottom: -70px;
+    right: -70px;
+    background: #ffb8d880;
+}
+
+.container {
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+    padding: 35px 15px 45px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+h1 {
+    font-size: clamp(28px, 6vw, 42px);
+    margin: 0 0 10px;
+    text-shadow: 0 3px 15px #ffffff90;
+}
+
+.subtitle {
+    font-size: 15px;
+    margin: 0 0 30px;
+    color: #a55d80;
+}
+
+/* Floating photos */
+.gallery {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 30px;
+}
+
+.photo-frame {
+    width: 85px;
+    height: 110px;
+    padding: 6px 6px 19px;
+    background: white;
+    border-radius: 5px;
+    box-shadow: 0 8px 22px #b65c8430;
+    animation: photoFloat 4s ease-in-out infinite;
+}
+
+.photo-frame:nth-child(1) {
+    transform: rotate(-8deg);
+}
+
+.photo-frame:nth-child(2) {
+    transform: rotate(5deg);
+    animation-delay: 0.5s;
+}
+
+.photo-frame:nth-child(3) {
+    transform: rotate(-4deg);
+    animation-delay: 1s;
+}
+
+.photo-frame:nth-child(4) {
+    transform: rotate(8deg);
+    animation-delay: 1.5s;
+}
+
+.photo-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 3px;
+}
+
+/* Cute envelope */
+.envelope-link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    animation: envelopeFloat 3s ease-in-out infinite;
+    cursor: pointer;
+}
+
+.envelope {
+    position: relative;
+    width: 230px;
+    height: 155px;
+    margin: 15px auto 20px;
+    background: #ffabc7;
+    border-radius: 8px;
+    box-shadow: 0 15px 35px #c875d950;
+}
+
+.envelope-back {
+    position: absolute;
+    inset: 0;
+    background: #ffbad1;
+    border-radius: 8px;
+}
+
+.envelope-flap {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    border-left: 115px solid transparent;
+    border-right: 115px solid transparent;
+    border-top: 90px solid #f58db3;
+    z-index: 3;
+}
+
+.envelope-front {
+    position: absolute;
+    inset: 0;
+    background: #ffc4d8;
+    clip-path: polygon(0 100%, 50% 42%, 100% 100%);
+    border-radius: 0 0 8px 8px;
+    z-index: 4;
+}
+
+.letter-preview {
+    position: absolute;
+    top: 18px;
+    left: 25px;
+    width: 180px;
+    height: 110px;
+    background: #fffafc;
+    border-radius: 5px;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    box-shadow: 0 3px 10px #b65c8420;
+}
+
+.envelope-heart {
+    position: absolute;
+    z-index: 5;
+    left: 50%;
+    top: 67px;
+    transform: translateX(-50%);
+    font-size: 28px;
+    color: white;
+    text-shadow: 0 2px 5px #d76b98;
+}
+
+.tap-text {
+    font-size: 15px;
+    color: #a55d80;
+    margin-top: 18px;
+}
+
+.music-status {
+    margin-top: 18px;
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    color: #a55d80;
+}
+
+.music-button {
+    margin-top: 12px;
+    border: none;
+    border-radius: 30px;
+    padding: 11px 20px;
+    font-size: 13px;
+    color: white;
+    background: linear-gradient(135deg, #f08bb5, #c875d9);
+    box-shadow: 0 6px 18px #c875d940;
+    cursor: pointer;
+}
+
+.footer {
+    margin-top: 30px;
+    font-size: 13px;
+    color: #b56b8d;
+}
+
+/* Floating hearts */
+.heart {
+    position: fixed;
+    bottom: -35px;
+    z-index: 0;
+    pointer-events: none;
+    color: #ef8bb5;
+    opacity: 0.8;
+    animation: floatUp linear forwards;
+}
+
+@keyframes floatUp {
+    from {
+        transform: translateY(0) rotate(0deg);
+        opacity: 0.8;
+    }
+    to {
+        transform: translateY(-115vh) rotate(35deg);
+        opacity: 0;
+    }
+}
+
+@keyframes photoFloat {
+    0%, 100% {
+        translate: 0 0;
+    }
+    50% {
+        translate: 0 -7px;
+    }
+}
+
+@keyframes envelopeFloat {
+    0%, 100% {
+        translate: 0 0;
+    }
+    50% {
+        translate: 0 -8px;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 28px 12px 35px;
+    }
+
+    .photo-frame {
+        width: 70px;
+        height: 95px;
+        padding: 5px 5px 16px;
+    }
+
+    .envelope {
+        transform: scale(0.92);
+        margin: 5px auto 10px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="glow one"></div>
+<div class="glow two"></div>
+
+<main class="container">
+
+    <h1>To My Favorite Person ♡</h1>
+    <p class="subtitle">
+        I made a little something just for you 💗
+    </p>
+
+    <!-- Your photos -->
+    <section class="gallery">
+        <div class="photo-frame">
+            <img src="photo1.jpg" alt="Our memory one">
+        </div>
+
+        <div class="photo-frame">
+            <img src="photo2.jpg" alt="Our memory two">
+        </div>
+
+        <div class="photo-frame">
+            <img src="photo3.jpg" alt="Our memory three">
+        </div>
+
+        <div class="photo-frame">
+            <img src="photo4.jpg" alt="Our memory four">
+        </div>
+    </section>
+
+    <!-- Click envelope to open password page -->
+    <a href="password.html" class="envelope-link"
+       aria-label="Open your love letter">
+
+        <div class="envelope">
+            <div class="envelope-back"></div>
+
+            <div class="letter-preview">
+                💌
+            </div>
+
+            <div class="envelope-flap"></div>
+            <div class="envelope-front"></div>
+            <div class="envelope-heart">♥</div>
+        </div>
+
+        <p class="tap-text">
+            Tap the envelope to open your surprise ♡
+        </p>
+    </a>
+
+    <!-- Music status and manual fallback -->
+    <div class="music-status" id="musicStatus">
+        🎵 Trying to play a little song for you...
+    </div>
+
+    <button class="music-button" id="musicButton" type="button">
+        🎵 Play Music ♡
+    </button>
+
+    <footer class="footer">
+        Made with love, just for you ✨
+    </footer>
+
+</main>
+
+<!-- Automatic looping music on the index page -->
+<audio id="backgroundMusic" autoplay loop preload="auto">
+    <source src="music1.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+const music = document.getElementById("backgroundMusic");
+const musicButton = document.getElementById("musicButton");
+const musicStatus = document.getElementById("musicStatus");
+
+// Try automatic playback when index.html opens.
+async function startMusic() {
+    try {
+        await music.play();
+        musicStatus.textContent = "🎵 Now playing just for you 💗";
+        musicButton.textContent = "⏸ Pause Music ♡";
+    } catch (error) {
+        musicStatus.textContent =
+            "If music doesn't start automatically, tap Play Music ♡";
+    }
+}
+
+window.addEventListener("load", startMusic);
+
+// Manual fallback if the browser blocks autoplay.
+musicButton.addEventListener("click", async function () {
+    if (music.paused) {
+        try {
+            await music.play();
+            musicStatus.textContent = "🎵 Now playing just for you 💗";
+            musicButton.textContent = "⏸ Pause Music ♡";
+        } catch (error) {
+            musicStatus.textContent =
+                "Please check that music1.mp3 is in this folder.";
+        }
+    } else {
+        music.pause();
+        musicButton.textContent = "🎵 Play Music ♡";
+        musicStatus.textContent = "Music paused ♡";
+    }
+});
+
+// Display an error if the music file cannot be loaded.
+music.addEventListener("error", function () {
+    musicStatus.textContent =
+        "Can't find music1.mp3. Check the filename and folder.";
+});
+
+// Floating hearts
+function createHeart() {
+    const heart = document.createElement("div");
+
+    heart.className = "heart";
+    heart.textContent = ["♡", "♥", "💕", "💗"][
+        Math.floor(Math.random() * 4)
+    ];
+
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.fontSize = (14 + Math.random() * 18) + "px";
+    heart.style.animationDuration = (6 + Math.random() * 5) + "s";
+
+    document.body.appendChild(heart);
+
+    setTimeout(function () {
+        heart.remove();
+    }, 11000);
+}
+
+setInterval(createHeart, 650);
+</script>
+
+</body>
+</html>
